@@ -13,7 +13,7 @@ All components are encapsulated into QueueFairClient, which is the class you wil
 
 The Adapter manages its own persistent storage to remember that particular users have been Passed by Queue-Fair, in the form of UserDefaults, and also persistent Cookies when a QueueFairViewController is launched.
 
-Typically, you will replace a call to launch a protected activity or start a protected operation with a call to QueueFairClient, with an object that implements the QueueFairClientDelegate protocol.  This is usually - but does not have to be - the parent ViewController.  Then call queueFairClient.go().  QueueFairClient will launch a QueueFairViewController if it is necessary to show your user a Queue display, or pass the user immediately.
+Typically, you will replace a call to launch a protected scene/ViewController or start a protected operation with a call to QueueFairClient, with an object that implements the QueueFairClientDelegate protocol.  This is usually - but does not have to be - the parent ViewController.  Then call queueFairClient.go().  QueueFairClient will launch a QueueFairViewController if it is necessary to show your user a Queue display, or pass the user immediately.
 
 This distribution also includes source code for a demonstration app, QueueFairDemo.  Example code for using QueueFairClient is contained within the QueueFairDemo's ViewController.swift file.
 
@@ -53,7 +53,8 @@ at the top, with the rest of any import statements.  If you are building the Que
 
 **11.**  Example code with instructions on how to use the QueueFairClient in your own code is contained in QueueFairDemo's ViewController.swift in the continueClicked() method at the end, and also in the methods implemented from QueueFairClientDelegate at the top of ViewController.swift.  Typically you will construct a QueueFairClient with a ViewController instance, and an instance that implements the QueueFairClientDelegate protocol.  Usually this will be the same object.  Then call queueFairClient.go();
 
-**15.** In the line that constucts the QueueFairClient, change the accountSystemName to the System Name for your account from the Queue-Fair Portal's Account -> Your Account page.  Also change the queueSystemName to the System Name for the queue you want to use in this app or for your protected activity/operation, visible in the Queue-Fair Portal on the Queue Settings page.  If you create a custom Variant for display in your app, also pass in the variant name here, or leave it as 'nil' to use your queue's default variant.
+**15.** In the line that constucts the QueueFairClient, change the accountSystemName to the System Name for your account from the Queue-Fair Portal's Account -> Your Account page.  Also change the queueSystemName to the System Name for the queue you want to use in this app or for your protected 
+/operation, visible in the Queue-Fair Portal on the Queue Settings page.  If you create a custom Variant for display in your app, also pass in the variant name here, or leave it as 'nil' to use your queue's default variant.
 
 **16.** Build and run your app.
 
@@ -66,9 +67,9 @@ Use a queue that is not in use on other pages/apps, or create a new queue for te
 #### Testing SafeGuard
 Make sure your code uses the correct queue System Name, and that the Queue is set to SafeGuard.
 
-Open the app and hit Continue.  A message will appear in the Xcode console output to indicate that you have been passed by SafeGuard, without seeing a Queue Page, and the protected activity will launch.
+Open the app and hit Continue.  A message will appear in the Xcode console output to indicate that you have been passed by SafeGuard, without seeing a Queue Page, and the protected scene will launch.
 
-Use the back button on your phone/emulator.  Tap Continue again.  The message in the Xcode console output will indicate that you have been Repassed, because the Passed Lifetime for your queue has not expired, and the protected activity will launch again.
+Use the back button on your phone/emulator.  Tap Continue again.  The message in the Xcode console output will indicate that you have been Repassed, because the Passed Lifetime for your queue has not expired, and the protected scene will launch again.
 
 
 #### Testing Queue
@@ -78,7 +79,7 @@ In the App tap Reset Adapter to delete your Passed status, stored by the app.
 
 Tap Continue.
  - Verify that you are now sent to queue.
- - When you come back to the page from the queue, verify that Xcode console output appears containing the word "Passed", and that the protected activity launches.
+ - When you come back to the page from the queue, verify that Xcode console output appears containing the word "Passed", and that the protected scene launches.
  - Use the back button and hit Continue again.  Verify that you are shown as "Repassed", without seeing a Queue Page a second time.
 
 If you wish to fully clear your Passed status, then if you have been shown a Queue Page, you must tap both Reset Adapter and Reset Queue-Fair buttons.  These buttons are present in the QueueFairDemo app to help you test - you would not normally show them in a production app.
@@ -90,7 +91,7 @@ Activation Rules and Variant Rules from the portal are not germane to this use c
 
 Any Target settings for your queue are also not germane to this use case and are also ignored - rather you set the target within your app in the QueueFairClientListener implementation that you supply to QueueFairClient.  Any Queue Pages shown within your app will not go on to request a target page from any site.
 
-QueueFairClient objects are not reusable - you should create a new one every time your app is about to start the protected activity/operation.
+QueueFairClient objects are not reusable - you should create a new one every time your app is about to start the protected scene/ViewController/operation.
 
 The minimum iOS version for apps using this release of the Queue-Fair iOS Adapter is 11.0.  If you need a version of this Adapter that is compatible with earlier versions of iOS, please contact Queue-Fair support.
 
