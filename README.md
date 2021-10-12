@@ -39,7 +39,7 @@ This guide assumes you already have Xcode.  We recommend you perform the steps b
 
 **7.** In Finder, drag the QueueFairAdapter.xcodeproj contained within the QueueFairAdapter folder of this distribution into Project Navigator.  It needs to go underneath the second QueueFairDemo entry there (not the first), or if you are not building QueueFairDemo, the second appearance of the name of your app.
 
-**8.** Now tap the first QueueFairDemo (or NameOfYourApp) entry in Project Navigator (not the second) and go to the General tab.  Scroll down until you find the Frameworks, Libraries and Embedded Content tab.  Expand this, and select the '+' button at the bottom.
+**8.** Now tap the first (not the second) QueueFairDemo (or NameOfYourApp) entry in Project Navigator and go to the General tab.  Scroll down until you find the Frameworks, Libraries and Embedded Content tab.  Expand this, and select the '+' button at the bottom.
 
 **9.** In the dialog that appears, select QueueFairAdapter.framework, then Add.
 
