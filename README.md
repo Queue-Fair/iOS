@@ -111,7 +111,7 @@ Your Account and Queue settings are downloaded by the Adapter in normal operatio
 
 The downloaded settings are cached for up to 5 minutes by default.  You can set QueueFairConfig.settingsCacheLifetimeMinutes to 0 to download a fresh copy of the settings every time, which may be useful while you are coding - but please set this back to at least 5 for release versions of your app.
 
-Unlike our Server-Side Adapters, The iOS adapter always works in SAFE_MODE - SIMPLE_MODE is not suitable for this use case.
+Unlike our Server-Side Adapters, the Queue-Fair iOS Adapter always works in SAFE_MODE - SIMPLE_MODE is not suitable for this use case.
 
 
 ## AND FINALLY
