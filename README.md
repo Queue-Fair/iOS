@@ -101,7 +101,7 @@ If the parent ViewController has a navigationController, the launched ViewContro
 
 If the parent ViewController does not have a navigationController, there is no back button.
 
-To customise the display for your app, the easiest way is to can create a variant of your queue for use within your app in the Queue-Fair Portal, and tell your app to use it by passing its name as the variant parameter to the QueueFairClient constructor.  This means that your app users can participate in the same queue as your website visitors, but have a custom display for your app.
+To customise the display for your app, the easiest way is to create a variant of your queue for use within your app in the Queue-Fair Portal, and tell your app to use it by passing its name as the variant parameter to the QueueFairClient constructor.  This means that your app users can participate in the same queue as your website visitors, but have a custom display for your app.
 
 For finer display control, you may wish to modify QueueFairViewController.swift, which will allow you to use your own custom layouts, including iOS UI components.  For example, you may wish to use iOS UI components for the text of the queue page, with just the progress bar within a WebView.
 
