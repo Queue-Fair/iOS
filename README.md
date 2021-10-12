@@ -33,7 +33,7 @@ This guide assumes you already have Xcode.  We recommend you perform the steps b
 
 **5.** Go back to Xcode, and the Project Navigator on the left hand side.  Open the Main storyboard.  There are three scenes - a Navigation Controller to ensure that a Back button exists (but you don't have to use a Navigation Controller on your own apps), a main scene with three buttons, and a protected scene, which represents the activity or operation you wish to protect with Queue-Fair.
 
-**6.** If Xcode does not automatically pick up ProtectedViewController, then from Finder drag it from your QueueFairDemo->QueueFairDemo folder to the Project Navigator, placing it underneath ViewController, and accept the default options to add the file.  The demo app will contain build errors until you add the QueueFairAdapter Framework from this distribution,
+**6.** If Xcode does not automatically pick up ProtectedViewController, then from Finder drag it from your QueueFairDemo->QueueFairDemo folder to the Project Navigator, placing it underneath ViewController, and accept the default options to add the file.  The demo app will contain build errors until you add the QueueFairAdapter Framework from this distribution, as described in the next section.
 
 ## Adding the library to an existing app
 
