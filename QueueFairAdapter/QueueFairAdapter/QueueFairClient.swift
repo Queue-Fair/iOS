@@ -112,7 +112,7 @@ public class QueueFairClient {
     func onPassFromQueue(_ target: String,_ passType: String,_ when: Int) {
         if(d) {
             QueueFairClient.info("Passed by queue "+passType+" t: "+target);
-        }
+        } 
         let i = QueueFairAdapter.lastIndexOf(target,"qfqid=");
         if(i == -1) {
             self.delegate.queueFairOnError("Target does not contain Passed String");
