@@ -13,7 +13,8 @@ All components are encapsulated into QueueFairClient, which is the class you wil
 
 The Adapter manages its own persistent storage to remember that particular users have been Passed by Queue-Fair, in the form of UserDefaults, and also persistent Cookies when a QueueFairViewController is launched.
 
-Typically, you will replace a call to launch a protected activity or start a protected operation with a call to QueueFairClient, implementing a QueueFairListener object that then launches the protected activity or starts the operation when the app user is Passed by the queue.  
+Typically, you will replace a call to launch a protected activity or start a protected operation with a call to QueueFairClient, with an object that implements the QueueFairClientDelegate protocol.  This is usually - but does not have to be - the parent ViewController.  Then call queueFairClient.go().  QueueFairClient will launch a QueueFairViewController if it is necessary to show your user a Queue display, or pass the user immediately.
+
 This distribution also includes source code for a demonstration app, QueueFairDemo.  Example code for using QueueFairClient is contained within the QueueFairDemo's ViewController.swift file.
 
 If your vistors navigate away from a displayed Queue Page (by using the back button when present, by opening another app, or their phone going to sleep, for example), they do not lose their place in the queue - it is saved in the same way as places are saved for your web visitors.
