@@ -5,7 +5,7 @@ Queue-Fair can be added to any iOS or MacOS app easily in minutes.  This Queue-F
 
 
 ## About the Adapter
-The iOS Adapter has two major components, the Adapter code that checks and validates your users with the Queue-Fair service, which is similar to ourServer-Side Adapters, and a Queue-Fair ViewController that displays Queue, Hold, PreSale and PostSale pages to your users when they cannot be Passed immediately by SafeGuard.
+The iOS Adapter has two major components, the Adapter code that checks and validates your users with the Queue-Fair service, which is similar to our Server-Side Adapters, and a Queue-Fair ViewController that displays Queue, Hold, PreSale and PostSale pages to your users when they cannot be Passed immediately by SafeGuard.
 
 These pages are displayed inside a WebView.  You can create app-specific displays by using the Portal and a named Variant for your app.
 
