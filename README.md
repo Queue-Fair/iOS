@@ -43,7 +43,7 @@ This guide assumes you already have Xcode.  We recommend you perform the steps b
 
 **9.** In the dialog that appears, select QueueFairAdapter.framework, then Add.
 
-**10.** Your swift files that us the Adapter will need
+**10.** Your swift files that use the Adapter will need
 
 	import QueueFairAdapter
 
