@@ -277,7 +277,7 @@ class QueueFairAdapter {
                 } else {
                     redirectLoc += "?";
                 }
-                redirectLoc += variant!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!;
+                redirectLoc += "qfv="+variant!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!;
             }
             
             if(extra != nil) {
@@ -286,7 +286,7 @@ class QueueFairAdapter {
                 } else {
                     redirectLoc += "?";
                 }
-                redirectLoc += extra!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!;
+                redirectLoc += "qfx="+extra!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!;
             }
             
             if(QueueFairConfig.debug) {
