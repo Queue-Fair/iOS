@@ -53,11 +53,15 @@ class QueueFairViewController : UIViewController, WKScriptMessageHandler {
         
         var urlStr = QueueFairClient.queuePageLoc!;
         if(QueueFairAdapter.indexOf(urlStr,"?") != -1) {
-            urlStr += "?";
-        } else {
             urlStr += "&";
+        } else {
+            urlStr += "?";
         }
+
         urlStr+="qfnoredirect=true"
+        if(QueueFairConfig.debug) {
+            QueueFairViewController.info("Getting page from "+urlStr)
+        }
         let url = URL(string: urlStr);
         let req = URLRequest(url: url!);
         webView.load(req);
