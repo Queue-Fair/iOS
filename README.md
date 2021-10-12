@@ -51,7 +51,7 @@ at the top, with the rest of any import statements.  If you are building the Que
 
 ## Running the Adapter
 
-**11.**  Example code with instructions on how to use the QueueFairClient in your own code is contained in QueueFairDemo's ViewController.swift in the continueClicked() method at the end.  Typically you will construct it with a ViewController instance, and an instance that implements the QueueFairClientDelegate protocol.  Usually this will be the same object.  Then call queueFairClient.go();
+**11.**  Example code with instructions on how to use the QueueFairClient in your own code is contained in QueueFairDemo's ViewController.swift in the continueClicked() method at the end, and also in the methods implemented from QueueFairClientDelegate at the top of ViewController.swift.  Typically you will construct a QueueFairClient with a ViewController instance, and an instance that implements the QueueFairClientDelegate protocol.  Usually this will be the same object.  Then call queueFairClient.go();
 
 **15.** In the line that constucts the QueueFairClient, change the accountSystemName to the System Name for your account from the Queue-Fair Portal's Account -> Your Account page.  Also change the queueSystemName to the System Name for the queue you want to use in this app or for your protected activity/operation, visible in the Queue-Fair Portal on the Queue Settings page.  If you create a custom Variant for display in your app, also pass in the variant name here, or leave it as 'nil' to use your queue's default variant.
 
