@@ -286,7 +286,7 @@ class QueueFairAdapter {
                 } else {
                     redirectLoc += "?";
                 }
-                redirectLoc += "qfx="+extra!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!;
+                redirectLoc += extra!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!;
             }
             
             if(QueueFairConfig.debug) {
