@@ -12,7 +12,7 @@ public class QueueFairConfig {
     
     public static var account = "REPLACE_WITH_YOUR_ACCOUNT_SYSTEM_NAME";
     public static var debug = false;
-    public static var settingsCacheLifetimeMinutes = 0;
+    public static var settingsCacheLifetimeMinutes = 5;
     public static var proto = "https";
     public static var filesServer = "files.queue-fair.net";
     public static var readTimeoutSeconds : Double = 15.0;
