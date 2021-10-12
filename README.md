@@ -89,7 +89,7 @@ If you wish to fully clear your Passed status, then if you have been shown a Que
 
 Activation Rules and Variant Rules from the portal are not germane to this use case and are ignored.  Instead, specify the queue you wish to use and (optionally) the variant you want to display in the construction call to QueueFairClient.
 
-Any Target settings for your queue are also not germane to this use case and are also ignored - rather you set the target within your app in the QueueFairClientListener implementation that you supply to QueueFairClient.  Any Queue Pages shown within your app will not go on to request a target page from any site.
+Any Target settings for your queue are also not germane to this use case and are also ignored - rather you set the target within your app in the queueFairOnPass() method implementation of the QueueFairClientDelegate that you supply to QueueFairClient.  All delegate calls are run on your app's main thread.  Any Queue Pages shown within your app will not go on to request a target page from any site, even when someone reaches the front of the queue - the queueFairOnPass() method is called instead.
 
 QueueFairClient objects are not reusable - you should create a new one every time your app is about to start the protected scene/ViewController/operation.
 
