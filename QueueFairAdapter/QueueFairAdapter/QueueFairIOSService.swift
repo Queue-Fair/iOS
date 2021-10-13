@@ -8,7 +8,7 @@
 
 import Foundation
 
-class QueueFairIOSService {
+public class QueueFairIOSService {
     
     static var doPreferencesSynch : Bool = true;
     var redirectLoc : String?
@@ -69,7 +69,7 @@ class QueueFairIOSService {
         print("QFS: "+message);
     }
     
-    static func setPreference(_ key: String,_ value: String) {
+    public static func setPreference(_ key: String,_ value: String) {
         if(QueueFairConfig.debug) {
             info("Setting "+key+" to "+value);
         }
@@ -81,7 +81,7 @@ class QueueFairIOSService {
         
     }
     
-    static func indexOf(_ haystack: String,_ needle: String) -> Int {
+    public static func indexOf(_ haystack: String,_ needle: String) -> Int {
         let range: Range<String.Index>? = haystack.range(of: needle);
         
         if(range == nil) {
@@ -103,7 +103,7 @@ class QueueFairIOSService {
         }
     }
     
-    static func getPreference(_ key: String) -> String {
+    public static func getPreference(_ key: String) -> String {
         var ret = "DEFAULT_VALUE";
         
         let got: String? = UserDefaults.standard.string(forKey: "QueueFairAdapter."+key);
