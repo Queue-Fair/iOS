@@ -110,19 +110,22 @@ class QueueFairViewController : UIViewController, WKScriptMessageHandler {
             QueueFairViewController.info(msg);
         }
         
-        if(QueueFairAdapter.indexOf(msg, "REDIRECT") == -1) {
-            return;
-        }
-        
-        if(QueueFairAdapter.indexOf(msg, "qfpt") == -1) {
-            return;
-        }
-        
         let i = QueueFairAdapter.indexOf(msg, "{");
+        if(i == -1) {
+            return;
+        }
+        
+        if(QueueFairAdapter.indexOf(msg, "REDIRECT") == -1 && QueueFairAdapter.indexOf(msg, "JOIN") == -1) {
+            return;
+        }
+        
+        
+        
+        
         let j = QueueFairAdapter.indexOf(msg, "}");
         
         if(i == -1 || j == -1) {
-            error("Invalid redirect.");
+            error("Invalid json.");
             return;
         }
         let jsonStr = QueueFairAdapter.substring(msg,i,j-i+1);
@@ -130,7 +133,31 @@ class QueueFairViewController : UIViewController, WKScriptMessageHandler {
         let json = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
         
         if(json == nil) {
-            error("Could not parse redirect.");
+            error("Could not parse json.");
+            return;
+        }
+        
+        if(QueueFairAdapter.indexOf(msg, "JOIN") != -1) {
+            let requestObj = json!["request"];
+            if(requestObj == nil) {
+                return;
+            }
+            
+            let request = Int(String(describing: requestObj!));
+            if(request == nil) {
+                return;
+            }
+            
+            QueueFairIOSService.setPreference("mostRecentRequestNumber",String(describing: request!));
+            
+            if(client != nil) {
+                client!.onJoin(request!);
+            }
+            return;
+        }
+        
+        //It's a REDIRECT
+        if(QueueFairAdapter.indexOf(msg, "qfpt") == -1) {
             return;
         }
         
@@ -176,6 +203,5 @@ class QueueFairViewController : UIViewController, WKScriptMessageHandler {
         }
         
     }
-    
-    
+       
 }
