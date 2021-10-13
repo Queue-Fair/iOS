@@ -22,6 +22,9 @@ public protocol QueueFairClientDelegate {
     func queueFairOnShow();
     
     func queueFairOnAbandon(_ cause: String);
+    
+    func queueFairOnJoin(_ request: Int);
+    
 }
 
 public class QueueFairClient {
@@ -91,6 +94,12 @@ public class QueueFairClient {
         }
     }
     
+    func onJoin(_ request: Int) {
+        DispatchQueue.main.async {
+            self.delegate.queueFairOnJoin(request);
+        }
+    }
+    
     func gotRedirect(_ location: String) {
         QueueFairClient.queuePageLoc = location
         
@@ -112,7 +121,7 @@ public class QueueFairClient {
     func onPassFromQueue(_ target: String,_ passType: String,_ when: Int) {
         if(d) {
             QueueFairClient.info("Passed by queue "+passType+" t: "+target);
-        } 
+        }
         let i = QueueFairAdapter.lastIndexOf(target,"qfqid=");
         if(i == -1) {
             self.delegate.queueFairOnError("Target does not contain Passed String");
