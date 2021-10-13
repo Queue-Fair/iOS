@@ -12,7 +12,7 @@ import QueueFairAdapter
 class ViewController: UIViewController, QueueFairClientDelegate {
     
     /* Called by the Adapter when settings could not be downloaded.
-     * This will normally be becaus the device does not have internet access.
+     * This will normally be because the device does not have internet access.
      * You would normally start the protected activity in this case.
      */
     func queueFairOnNoSettings() {
@@ -26,7 +26,7 @@ class ViewController: UIViewController, QueueFairClientDelegate {
      * in this case.
      */
     func queueFairOnError(_ message: String) {
-        ViewController.info("QFD: Error "+message);
+        ViewController.info("QFD: Error " + message);
         launchProtectedScene()
     }
     
@@ -36,7 +36,9 @@ class ViewController: UIViewController, QueueFairClientDelegate {
      * already been passed and the queue's Passed Lifetime has not expired.
      */
     func queueFairOnPass(_ passType: String) {
-        ViewController.info("QFD: Pass "+passType);
+        // If you have already told your Push Notification system to send a notification in queueFairOnAbandon(),
+        // tell it to cancel the request here.
+        ViewController.info("QFD: Pass " + passType);
         launchProtectedScene()
     }
     
@@ -44,7 +46,26 @@ class ViewController: UIViewController, QueueFairClientDelegate {
      * PreSale Page or PostSale Page to your user.
      */
     func queueFairOnShow() {
+        // If you have already requested your Push Notification system to send a notification when this user
+        // reaches the front of the queue in your implementation of queueFairOnAbandon(), cancel the request here.
         ViewController.info("QFD: Showing");
+    }
+    
+    /* Called by the adapter when a user is assigned a queue position.  You can use this with
+     * your notification system to send a Push Notification to a user who has closed your app
+     * that they have reached the front of the queue.  See https://firebase.google.com/docs/cloud-messaging
+     * and https://firebase.google.com/docs/cloud-messaging/ios/first-message for a tutorial on Push Notifications.
+     * or if you wish to use Apple's own Push Notfication service, see https://developer.apple.com/documentation/usernotifications/
+     */
+    func queueFairOnJoin(_ request: Int) {
+        // You may wish to store the request number (queue position) within your own code.  It will also be persistently
+        // stored by the Adapter automatically.  You can also get the most recently assigned request number (queue position)
+        // with QueueFairIOSService.getPreference("mostRecentRequestNumber") at any time
+        //
+        // You should wait until queueFairOnAbandon() is called to tell your Push Notification system to send a
+        // notification when the visitor reaches the front of the queue.  For now just remember the request number.
+        
+        ViewController.info("QFD Joined with request " + String(describing: request));
     }
     
     /* Called when the user uses the Back button to leave the queue
@@ -54,9 +75,10 @@ class ViewController: UIViewController, QueueFairClientDelegate {
      * will continue when the user comes back to the app automatically.
      */
     func queueFairOnAbandon(_ cause: String) {
-        ViewController.info("QFD: Abandon: "+cause);
-    }
-    
+        // If you wish to send the user a notification when this user has reached the front of the queue,
+        // tell your Push Notification system here, using the request number stored from queueFairOnJoin()
+        ViewController.info("QFD: Abandon: " + cause);
+    }    
     
     override func viewDidLoad() {
         super.viewDidLoad()
