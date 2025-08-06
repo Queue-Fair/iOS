@@ -53,8 +53,7 @@ at the top, with the rest of any import statements.  If you are building the Que
 
 **11.**  Example code with instructions on how to use the QueueFairClient in your own code is contained in QueueFairDemo's ViewController.swift in the continueClicked() method at the end, and also in the methods implemented from QueueFairClientDelegate at the top of ViewController.swift.  Typically you will construct a QueueFairClient with a ViewController instance, and an instance that implements the QueueFairClientDelegate protocol.  Usually this will be the same object.  Then call queueFairClient.go();
 
-**15.** In the line that constucts the QueueFairClient, change the accountSystemName to the System Name for your account from the Queue-Fair Portal's Account -> Your Account page.  Also change the queueSystemName to the System Name for the queue you want to use in this app or for your protected 
-/operation, visible in the Queue-Fair Portal on the Queue Settings page.  If you create a custom Variant for display in your app, also pass in the variant name here, or leave it as 'nil' to use your queue's default variant.
+**15.** In the line that constucts the QueueFairClient, change the accountSystemName to the System Name for your account from the Queue-Fair Portal's Account -> Your Account page.  Also change the queueSystemName to the System Name for the queue you want to use in this app or for your protected operation, visible in the Queue-Fair Portal on the Queue Settings page.  If you create a custom Variant for display in your app, also pass in the variant name here, or leave it as 'nil' to use your queue's default variant.  Finally, give a value for the Passed Lifetime in minutes, as the value from the setting in the Portal is not known to the Adapter.
 
 **16.** Build and run your app.
 
@@ -107,9 +106,7 @@ For finer display control, you may wish to modify QueueFairViewController.swift,
 
 Logging to Xcode console is disabled by default, but you can enable it with QueueFairConfig.debug = true - but please make sure it is disabled for release versions of your app.
 
-Your Account and Queue settings are downloaded by the Adapter in normal operation.  No queue or account secrets are downloaded or used, for security reasons (as they would be accessible to a very technically skilled user).  Secrets are not necessary for this use case.
-
-The downloaded settings are cached for up to 5 minutes by default.  You can set QueueFairConfig.settingsCacheLifetimeMinutes to 0 to download a fresh copy of the settings every time, which may be useful while you are coding - but please set this back to at least 5 for release versions of your app.
+To bring the iOS Adapter into line with our other App adapters, this release of the Adapter does NOT download your Account and Queue settings from the Portal. This makes for cleaner code and eliminates a dependency upon this settings file. Consequently, you now give the Adapter the Passed Lifetime as a parameter when construcing the Client component. This value is used by the Adapter to evaluate Repasses. The Passed Lifetime setting in the Portal is therefore ignored for this purpose, but it does continue to govern the lifetime of cookies set in the WebView upon pass by our servers. So, it’s best to keep the value you use in your code and the setting in the Portal the same.
 
 Unlike our Server-Side Adapters, the Queue-Fair iOS Adapter always works in SAFE_MODE - SIMPLE_MODE is not suitable for this use case.
 
