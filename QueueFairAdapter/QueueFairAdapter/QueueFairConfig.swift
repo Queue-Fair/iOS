@@ -12,7 +12,11 @@ public class QueueFairConfig {
     
     public static var account = "REPLACE_WITH_YOUR_ACCOUNT_SYSTEM_NAME";
     public static var debug = false;
+
+    /* Remote settings not used by this Adapter
     public static var settingsCacheLifetimeMinutes = 5;
+    */
+    
     public static var proto = "https";
     public static var filesServer = "files.queue-fair.net";
     public static var readTimeoutSeconds : Double = 15.0;
