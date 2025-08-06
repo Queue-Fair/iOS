@@ -20,12 +20,8 @@ class QueueFairAdapter {
     var requestedURL : String?
     var uid : String?
     var client : QueueFairClient
-    var settings : [String : Any]?
     var adapterQueue : [String : Any]?
     var extra : String?
-    
-    static var memSettings : [String : Any]?
-    static var lastMemSettings : Double = -1;
     
     init(_ service: QueueFairIOSService,_ client: QueueFairClient) {
         self.service = service;
@@ -363,84 +359,12 @@ class QueueFairAdapter {
         
     }
     
-    func getSettingsURL() -> String {
-        return QueueFairConfig.proto + "://" + QueueFairConfig.filesServer + "/" + QueueFairConfig.account + "/queue-fair-settings.js";
-    }
-    
-    func loadSettings() {
-        if(QueueFairAdapter.memSettings != nil && (QueueFairConfig.settingsCacheLifetimeMinutes == -1 || Int(self.now - QueueFairAdapter.lastMemSettings) < QueueFairConfig.settingsCacheLifetimeMinutes * 60)) {
-            settings = QueueFairAdapter.memSettings;
-            client.gotSettings();
-        }
-        
-        let url = getSettingsURL();
-        
-        if(QueueFairConfig.debug) {
-            QueueFairAdapter.info("Downloading settings for memory from "+url);
-        }
-        
-        
-        loadSettingsURL(url);
-    }
-    
     func error(_ message: String) {
         if(QueueFairConfig.debug) {
             QueueFairAdapter.info("Error: "+message);
         }
         client.onError(message);
-    }
     
-    func onNoSettings(_ message: String) {
-        if(QueueFairConfig.debug) {
-            QueueFairAdapter.info("No Settings: "+message);
-        }
-        client.onNoSettings(message);
-    }
-    
-    
-    func loadSettingsURL(_ urlStr: String) {
-        let url = URL(string: urlStr)!;
-        var request = URLRequest(url: url);
-        request.timeoutInterval = QueueFairConfig.readTimeoutSeconds;
-        
-        let session = URLSession.shared;
-        let task = session.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                self.onNoSettings(String(describing: error));
-            } else if let data = data {
-                self.gotSettingsData(String(decoding: data, as: UTF8.self))
-            } else {
-                self.onNoSettings("Unknown error.");
-            }
-        }
-        task.resume();
-    }
-    
-    func gotSettingsData(_ data: String) {
-        let i = data.firstIndex(of: "{");
-        if( i == nil) {
-            onNoSettings("Invalid settings.");
-            return;
-        }
-        let j = data.lastIndex(of: "}");
-        if(j==nil) {
-            onNoSettings("Invalid settings.");
-            return;
-        }
-        
-        let jsonStr = String(data[i!...j!]);
-        let jsonData = jsonStr.data(using: .utf8);
-        let json = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
-        if(json == nil) {
-            onNoSettings("Could not parse settings.");
-            return;
-        }
-        settings = json;
-        QueueFairAdapter.memSettings = settings;
-        QueueFairAdapter.lastMemSettings = now;
-        
-        client.gotSettings();
-    }
     
     static func info(_ message: String) {
         print("QFA: "+message);
