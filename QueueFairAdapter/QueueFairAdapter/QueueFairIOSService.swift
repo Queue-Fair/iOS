@@ -31,14 +31,15 @@ public class QueueFairIOSService {
             if(QueueFairConfig.debug) {
                 QueueFairIOSService.info("Preference for "+name+" has bad expires "+expires);
             }
+            return nil;
         }
         if(expireEpoch! < NSDate().timeIntervalSince1970) {
             if(QueueFairConfig.debug) {
                 QueueFairIOSService.info("Preference for "+name+" has expired.");
                 QueueFairIOSService.setPreference(name, "DEFAULT_VALUE");
                 QueueFairIOSService.setPreference(name+":expires", "DEFAULT_VALUE");
-                return nil;
             }
+            return nil;
         }
         return ret;
     }
