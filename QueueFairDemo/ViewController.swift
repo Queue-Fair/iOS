@@ -11,14 +11,12 @@ import QueueFairAdapter
 
 class ViewController: UIViewController, QueueFairClientDelegate {
     
-    /* Called by the Adapter when settings could not be downloaded.
-     * This will normally be because the device does not have internet access.
-     * You would normally start the protected activity in this case.
-     */
+    /* Remote settings file not used by this Adapter 
     func queueFairOnNoSettings() {
         ViewController.info("QFD: No Settings");
         launchProtectedScene()
     }
+    */
 
     /* Called by the Adapter when an error has occurred. This will
      * normally be because the device has lost internet access during
@@ -95,12 +93,7 @@ class ViewController: UIViewController, QueueFairClientDelegate {
         
         // Uncommenting the following will produce debug console output.
         // Comment it out for release versions of your app.
-        //QueueFairConfig.debug = true;
-        
-        // Uncommenting the following will force a fresh download
-        // of your account and queuesettings every time a QueueFairClient is run.
-        // Please set this to at least 5 for release versions of your app.
-        QueueFairConfig.settingsCacheLifetimeMinutes = 0;
+        //QueueFairConfig.debug = true
         
         // The client requires a parent UIViewController, and an object
         // implementing the QueueFairClientDelegate protocol.
@@ -113,7 +106,14 @@ class ViewController: UIViewController, QueueFairClientDelegate {
         // You can optionally provide a Variant name to provide custom
         // language, content or display for your users - or use nil if you
         // want to use the default variant for your queue.
-        let client = QueueFairClient(parent: self, queueServerDomain: nil, accountSystemName: "YOUR_ACCOUNT_SYSTEM_NAME", queueSystemName: "YOUR_QUEUE_SYSTEM_NAME", variant: nil, delegate:  self);
+
+        // This Adapter does not download queue settings from the Portal, so
+        // you must also set the Passed Lifetime in minutes here.  The Adapter
+        // therefore ignores the Passed Lifetime setting in the Portal for its internal
+        // storage evaluation of Repasses by the Adapter.  The setting in the
+        // Portal is used by our servers to set cookies in the WebView upon pass,
+        // so it is best to keep the parameter below and the Portal setting the same.
+        let client = QueueFairClient(parent: self, queueServerDomain: nil, accountSystemName: "YOUR_ACCOUNT_SYSTEM_NAME", queueSystemName: "YOUR_QUEUE_SYSTEM_NAME", passedLifetimeMinutes: 20, variant: nil, delegate:  self);
         
         //Run the adapter.
         client.go();
