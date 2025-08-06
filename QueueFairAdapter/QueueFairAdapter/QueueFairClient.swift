@@ -12,8 +12,10 @@ import UIKit
 import WebKit
 
 public protocol QueueFairClientDelegate {
-    
+
+    /* Remote settings not used by this Adapter.
     func queueFairOnNoSettings();
+    */
     
     func queueFairOnError(_ message: String);
     
@@ -33,6 +35,7 @@ public class QueueFairClient {
     var queueServerDomain : String?
     var accountSystemName : String
     var queueSystemName : String
+    var passedLifetimeMinutes : Int
     var variant : String?
     var delegate : QueueFairClientDelegate
     var d = false;
@@ -41,7 +44,7 @@ public class QueueFairClient {
     
     static var queuePageLoc : String?
     
-    public init(parent: UIViewController, queueServerDomain: String?, accountSystemName: String, queueSystemName: String, variant: String?, delegate: QueueFairClientDelegate) {
+    public init(parent: UIViewController, queueServerDomain: String?, accountSystemName: String, queueSystemName: String, variant: String?, passedLifetimeMinutes: Int, delegate: QueueFairClientDelegate) {
         self.parent = parent;
         self.queueServerDomain = queueServerDomain;
         if(queueServerDomain != nil) {
@@ -52,6 +55,7 @@ public class QueueFairClient {
         self.accountSystemName = accountSystemName;
         self.queueSystemName = queueSystemName;
         self.variant = variant;
+        self.passedLifetimeMinutes = passedLifetimeMinutes;
         self.delegate = delegate;
         
         QueueFairConfig.account = accountSystemName;
@@ -67,18 +71,21 @@ public class QueueFairClient {
         adapter.userAgent = "QueueFair iOS Adapter";
         adapter.requestedURL = "javascript:void(0)";
         adapter.setUIDFromCookie();
-        adapter.loadSettings();
+
+        let queue : [String: Any] = [
+            "name" : queueSystemName,
+            "displayName" : queueSystemName,
+            "queueServer" : queueServerDomain!,
+            "adapterServer" : queueServerDomain!,
+            "passedLifetimeMinutes" : String(passedLifetimeMinutes)
+        ];
+        
+        gotQueue(queue);
     }
     
     func onError(_ message: String) {
         DispatchQueue.main.async {
             self.delegate.queueFairOnError(message);
-        }
-    }
-    
-    func onNoSettings(_ message: String) {
-        DispatchQueue.main.async {
-            self.delegate.queueFairOnNoSettings();
         }
     }
     
@@ -156,45 +163,20 @@ public class QueueFairClient {
         }
     }
     
-    func gotSettings() {
-        if(d) {
-            QueueFairClient.info("Using settings "+String(describing: adapter!.settings!));
-        }
-        let queue = getQueueSettings(queueSystemName, adapter!.settings!);
-        if(queue == nil) {
-            onError("No queue found for "+queueSystemName);
-            return;
-        }
-        
+    func gotQueue(_ queue: [String:Any]) {
         let cookie = service?.getCookie("QueueFair-Pass-"+queueSystemName);
-        if(cookie != nil && adapter!.validateCookie(queue!, cookie!)) {
+        if(cookie != nil && adapter!.validateCookie(queue, cookie!)) {
             DispatchQueue.main.async {
                 self.delegate.queueFairOnPass("Repass");
             }
             return;
         }
         
-        adapter!.consultAdapter(queue!);
-        
+        adapter!.consultAdapter(queue);
     }
     
     static func info(_ message: String) {
         print("QFC: "+message);
     }
     
-    private func getQueueSettings(_ name: String,_ settings: [String:Any]) -> [String: Any]? {
-        
-        let queues = settings["queues"] as? [[String: Any]];
-        for queue in queues! {
-            let qName = queue["name"];
-            if(qName == nil) {
-                continue;
-            }
-            
-            if(String(describing: qName!) == name) {
-                return queue;
-            }
-        }
-        return nil;
-    }
 }
