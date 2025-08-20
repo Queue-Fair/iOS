@@ -321,19 +321,17 @@ class QueueFairAdapter {
             cookieDomainStr = String(describing: cookieDomain!);
         }
         
-        let plOpt = adapterQueue!["passedLifetimeMinutes"];
-        if(plOpt == nil) {
-            error("Queue has no passed lifetime.");
-            return;
+        var pl = -1;
+        
+        let plOpt = json!["pl"];
+        if(plOpt != nil) {
+            let ploi = Int(String(describing: plOpt!));
+            if(ploi != nil) {
+                pl = ploi!;
+            }
         }
         
-        let pl = Int(String(describing: plOpt!));
-        if(pl == nil) {
-            error("Could not parse passed lifetime \(plOpt!)");
-            return;
-        }
-        
-        let passedLifetimeMinutes = pl!;
+        let passedLifetimeMinutes = conditionalSetPassedLifetime(pl);
         
         setCookie(qName, validation!, passedLifetimeMinutes*60,cookieDomainStr);
         
@@ -343,9 +341,45 @@ class QueueFairAdapter {
             passType = "Unset";
         }
         
-        client.onPass(passType!);
+        client.onPass(passType!);   
+    }
+
+    func conditionalSetPassedLifetime(_ pl: Int) -> Int {
+        let plOpt = adapterQueue!["passedLifetimeMinutes"];
+        if(plOpt == nil) {
+            error("Queue has no passed lifetime.");
+            adapterQueue!["passedLifetimeMinutes"] = 20;
+            return 20;
+        }
+        
+        let pla = Int(String(describing: plOpt!));
+        if(pla == nil) {
+            error("Could not parse passed lifetime \(plOpt!)");
+            adapterQueue!["passedLifetimeMinutes"] = 20;
+            return 20;
+        }
         
         
+        if pla != -1 {
+            if QueueFairConfig.debug {
+                QueueFairAdapter.info("PassedLifetime set in code as " + String(describing: pla) + " - using.")
+            }
+            return pla!;
+        }
+
+        if pl > 0 {
+            if QueueFairConfig.debug {
+                QueueFairAdapter.info("Using received PassedLifetime " + String(describing: pl) + " minutes.")
+            }
+            adapterQueue!["passedLifetimeMinutes"] = pl
+            return pl
+        }
+
+        if QueueFairConfig.debug {
+            QueueFairAdapter.info("Response does not contain PassedLifetime and not set in code - defaulting to 20 mins")
+        }
+        adapterQueue!["passedLifetimeMinutes"] = 20
+        return 20
     }
     
     func setCookie(_ qName: String,_ value: String,_ lifetimeSeconds: Int,_ domain: String? ) {
