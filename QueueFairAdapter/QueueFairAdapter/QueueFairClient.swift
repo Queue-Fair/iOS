@@ -35,7 +35,7 @@ public class QueueFairClient {
     var queueServerDomain : String?
     var accountSystemName : String
     var queueSystemName : String
-    var passedLifetimeMinutes : Int
+    var passedLifetimeMinutes : Int = -1
     var variant : String?
     var delegate : QueueFairClientDelegate
     var d = false;
@@ -44,7 +44,7 @@ public class QueueFairClient {
     
     static var queuePageLoc : String?
     
-    public init(parent: UIViewController, queueServerDomain: String?, accountSystemName: String, queueSystemName: String, variant: String?, passedLifetimeMinutes: Int, delegate: QueueFairClientDelegate) {
+    public init(parent: UIViewController, queueServerDomain: String?, accountSystemName: String, queueSystemName: String, variant: String?, passedLifetimeMinutes: Int = -1, delegate: QueueFairClientDelegate) {
         self.parent = parent;
         self.queueServerDomain = queueServerDomain;
         if(queueServerDomain != nil) {
@@ -125,7 +125,7 @@ public class QueueFairClient {
         }
     }
     
-    func onPassFromQueue(_ target: String,_ passType: String,_ when: Int) {
+    func onPassFromQueue(_ target: String,_ passType: String,_ when: Int,_ pl: Int) {
         if(d) {
             QueueFairClient.info("Passed by queue "+passType+" t: "+target);
         }
@@ -135,12 +135,8 @@ public class QueueFairClient {
             return;
         }
         let passedString = QueueFairAdapter.substring(target,i,nil);
-        let plObj = adapter!.adapterQueue!["passedLifetimeMinutes"];
-        if(plObj == nil) {
-            self.delegate.queueFairOnError("Queue has no passed lifetime.");
-            return;
-        }
-        let passedLifetimeMinutes = Int(String(describing: plObj!));
+
+        let passedLifetimeMinutes = adapter?.conditionalSetPassedLifetime(pl);
         
         service!.setCookie("QueueFair-Pass-"+queueSystemName, passedString, passedLifetimeMinutes!*60,nil);
         
