@@ -106,7 +106,9 @@ For finer display control, you may wish to modify QueueFairViewController.swift,
 
 Logging to Xcode console is disabled by default, but you can enable it with QueueFairConfig.debug = true - but please make sure it is disabled for release versions of your app.
 
-To bring the iOS Adapter into line with our other App adapters, this release of the Adapter does NOT download your Account and Queue settings from the Portal. This makes for cleaner code and eliminates a dependency upon this settings file. Consequently, you now give the Adapter the Passed Lifetime as a parameter when construcing the Client component. This value is used by the Adapter to evaluate Repasses. The Passed Lifetime setting in the Portal is therefore ignored for this purpose, but it does continue to govern the lifetime of cookies set in the WebView upon pass by our servers. So, it’s best to keep the value you use in your code and the setting in the Portal the same.
+Unlike our Server-Side Adapters, this Adapter does not download your queue settings file from the Portal.  Activation Rules are not relevant for our App adapters so need not be downloaded, and the Passed Lifetime is instead obtained direct from our Queue Servers at the moment a Passed Cookie is to be created.
+
+You can override the Passed Lifetime from the Queue Servers with a parameter in code if you wish.
 
 Unlike our Server-Side Adapters, the Queue-Fair iOS Adapter always works in SAFE_MODE - SIMPLE_MODE is not suitable for this use case.
 
