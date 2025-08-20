@@ -193,13 +193,20 @@ class QueueFairViewController : UIViewController, WKScriptMessageHandler {
         }
         
         let target = String(describing: targetObj!);
+
+        var pl = -1;
+        let plObj = json!["pl"];
+        if(plObj != nil) {
+            let pli = Int(String(describing: plObj!));
+            pl = pli!;
+        } 
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (Double(when!) / 1000.0)) {
             self.finishWebView();
             self.clearFromNavigation()
             self.dismissing=true;
             self.dismiss(animated: true, completion: nil);
-            self.client!.onPassFromQueue(target, passType, when!);
+            self.client!.onPassFromQueue(target, passType, when!, pl);
         }
         
     }
