@@ -107,13 +107,10 @@ class ViewController: UIViewController, QueueFairClientDelegate {
         // language, content or display for your users - or use nil if you
         // want to use the default variant for your queue.
 
-        // This Adapter does not download queue settings from the Portal, so
-        // you must also set the Passed Lifetime in minutes here.  The Adapter
-        // therefore ignores the Passed Lifetime setting in the Portal for its internal
-        // storage evaluation of Repasses by the Adapter.  The setting in the
-        // Portal is used by our servers to set cookies in the WebView upon pass,
-        // so it is best to keep the parameter below and the Portal setting the same.
-        let client = QueueFairClient(parent: self, queueServerDomain: nil, accountSystemName: "YOUR_ACCOUNT_SYSTEM_NAME", queueSystemName: "YOUR_QUEUE_SYSTEM_NAME", passedLifetimeMinutes: 20, variant: nil, delegate:  self);
+        // This Adapter does not download queue settings from the Portal. You can set
+        // a PassedLifetime here, otherwise the Queue Servers will supply this at the
+        // moment a Passed Cookie is to be created (recommended).
+        let client = QueueFairClient(parent: self, queueServerDomain: nil, accountSystemName: "YOUR_ACCOUNT_SYSTEM_NAME", queueSystemName: "YOUR_QUEUE_SYSTEM_NAME", variant: nil, delegate:  self);
         
         //Run the adapter.
         client.go();
